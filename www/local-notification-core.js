@@ -65,8 +65,11 @@ exports.setDefaults = function (newDefaults) {
 exports.schedule = function (opts, callback, scope) {
     this.hasPermission(function(granted) {
 
-        if (!granted)
-            return;
+        if (!granted) {
+            this.registerPermission(function(result) {
+                if (!result) return;
+            }, this);
+        }
 
         var notifications = Array.isArray(opts) ? opts : [opts];
 
